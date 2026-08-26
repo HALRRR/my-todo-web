@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue Emotion</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family: "Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
+  background:
+    linear-gradient(180deg,#0a0a2e 0%,#1a1a4e 50%,#2d1b4e 100%),
+    repeating-linear-gradient(0deg,rgba(0,212,255,.03) 0 1px,transparent 1px 20px),
+    repeating-linear-gradient(90deg,rgba(0,212,255,.03) 0 1px,transparent 1px 20px);
+  min-height:100vh;
+  overflow-x:hidden;
+  color:#fff;
+}
+.wrap{
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+  min-height:100vh; padding:48px 16px 120px;
+}
+
+/* ==== Title ==== */
+.title{
+  font-family: "Courier New", monospace;
+  font-weight:900; letter-spacing:3px;
+  font-size:26px; margin-bottom:48px; text-align:center;
+  color:#00d4ff;
+  text-shadow:0 0 6px #00d4ff,0 0 14px #00d4ff,0 0 28px rgba(0,212,255,.6);
+}
+@media(min-width:768px){.title{font-size:40px}}
+
+/* ==== Pixel Girl (CSS only, works even JS dead) ==== */
+.girl-box{position:relative; margin-bottom:56px}
+.girl{position:relative; width:128px; height:192px; margin:0 auto}
+.hair{
+  position:absolute; top:0; left:16px; width:96px; height:64px;
+  background:#1a1a4e;
+  border-top-left-radius:48px; border-top-right-radius:48px;
+  box-shadow:0 0 18px #00d4ff;
+}
+.head{
+  position:absolute; top:24px; left:32px; width:64px; height:56px;
+  background:#fef3c7; border-radius:12px;
+  box-shadow:0 0 12px rgba(0,212,255,.25);
+}
+.eye{position:absolute; top:40px; width:6px; height:6px; background:#1f2937; border-radius:2px}
+.eye-l{left:44px} .eye-r{left:78px}
+.eye-h{position:absolute; top:38px; width:2px; height:2px; background:#fff; border-radius:1px}
+.eye-h-l{left:44px} .eye-h-r{left:78px}
+.blush{position:absolute; top:48px; width:8px; height:4px; background:#00d4ff; border-radius:50%; opacity:.6}
+.blush-l{left:34px} .blush-r{left:86px}
+.body{
+  position:absolute; top:80px; left:36px; width:56px; height:64px;
+  background:#00d4ff; border-bottom-left-radius:12px; border-bottom-right-radius:12px;
+  box-shadow:0 0 20px rgba(0,212,255,.4);
+}
+.body-deco{position:absolute; top:8px; left:56px; width:16px; height:16px; background:#fff; opacity:.3; border-radius:2px}
+.skirt{
+  position:absolute; top:136px; left:24px; width:80px; height:48px;
+  background:#00d4ff; opacity:.8;
+  border-bottom-left-radius:12px; border-bottom-right-radius:12px;
+  box-shadow:0 0 15px rgba(0,212,255,.25);
+}
+.pixel{position:absolute; bottom:0; width:8px; height:8px; background:#1a1a4e}
+.p1{left:0}.p2{left:16px}.p3{left:32px}.p4{left:48px}.p5{left:64px}
+.leg{position:absolute; bottom:0; width:12px; height:32px; background:#fef3c7; border-bottom-right-radius:2px; border-bottom-left-radius:2px}
+.leg-l{left:48px} .leg-r{left:68px}
+.arm{position:absolute; top:88px; width:12px; height:40px; background:#fef3c7; border-radius:4px; transform-origin:top center; transition:transform .3s}
+.arm-l{left:28px; transform:rotate(0deg)} .arm-r{left:88px; transform:rotate(0deg)}
+.glow{
+  position:absolute; bottom:-16px; left:-16px;
+  width:160px; height:32px; border-radius:50%;
+  filter:blur(16px); opacity:.5; background:#00d4ff;
+}
+/* Animations (default to breathe) */
+.girl-box{animation:breathe 3s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+@keyframes bounce-slow{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes float-up{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse-glow{0%,100%{opacity:1}50%{opacity:.7}}
+
+/* ==== Poem ==== */
+.poem-wrap{text-align:center; margin-bottom:40px; min-height:90px}
+.poem{font-size:24px; letter-spacing:2px; line-height:1.6; color:#00d4ff; margin-bottom:8px;
+  text-shadow:0 0 10px rgba(0,212,255,.5)}
+@media(min-width:768px){.poem{font-size:30px}}
+.poem-author{font-size:14px; opacity:.6; color:#00d4ff}
+
+/* ==== Emotion Buttons ==== */
+.buttons{display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:8px}
+.btn{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:12px 20px; border-radius:8px; cursor:pointer;
+  font-family:"Courier New",monospace; font-weight:700; font-size:13px;
+  border:none; background:rgba(26,26,78,.85); color:#00d4ff;
+  transition:all .3s;
+  box-shadow:inset -3px -3px 0 0 #1a1a4e, inset 3px 3px 0 0 #7dd3fc;
+}
+.btn .dot{width:8px; height:8px; border-radius:50%; background:currentColor;
+  box-shadow:0 0 8px currentColor}
+.btn:hover{transform:scale(1.05)}
+.btn.active{transform:scale(1.1)}
+
+/* ==== Footer ==== */
+.hint{position:fixed; bottom:24px; left:0; right:0; text-align:center;
+  font-family:"Courier New",monospace; font-size:11px; color:#00d4ff; opacity:.45; letter-spacing:1px; z-index:3}
+
+/* ==== Top gradient ==== */
+.top-grad{position:fixed; inset:0; pointer-events:none; z-index:1;
+  background:linear-gradient(180deg,rgba(0,212,255,.12) 0,transparent 10%,transparent 90%,rgba(0,212,255,.12) 100%);
+  transition:background .5s}
+
+/* ==== Stars (pure CSS) ==== */
+.stars{position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none}
+.s{position:absolute; width:2px; height:2px; background:#fff; border-radius:50%;
+  animation:twinkle 2.2s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:1}50%{opacity:.25}}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="top-grad" id="topGrad"></div>
+
+<div class="wrap">
+  <h1 class="title" id="title">Blue Emotion</h1>
+
+  <div class="girl-box" id="girlBox">
+    <div class="girl" id="girl">
+      <div class="hair" id="hair"></div>
+      <div class="head" id="head"></div>
+      <div class="eye eye-l"></div>
+      <div class="eye eye-r"></div>
+      <div class="eye-h eye-h-l"></div>
+      <div class="eye-h eye-h-r"></div>
+      <div class="blush blush-l" id="blushL"></div>
+      <div class="blush blush-r" id="blushR"></div>
+      <div class="body" id="body"></div>
+      <div class="body-deco"></div>
+      <div class="skirt" id="skirt">
+        <div class="pixel p1"></div>
+        <div class="pixel p2"></div>
+        <div class="pixel p3"></div>
+        <div class="pixel p4"></div>
+        <div class="pixel p5"></div>
+      </div>
+      <div class="leg leg-l"></div>
+      <div class="leg leg-r"></div>
+      <div class="arm arm-l" id="armL"></div>
+      <div class="arm arm-r" id="armR"></div>
+      <div class="glow" id="glow"></div>
+    </div>
+  </div>
+
+  <div class="poem-wrap">
+    <p class="poem" id="poem">海面如镜，心若止水</p>
+    <p class="poem-author" id="poemAuthor">&mdash; 深海微光</p>
+  </div>
+
+  <div class="buttons" id="buttons"></div>
+</div>
+
+<p class="hint">click the buttons below to change mood</p>
+
+<script>
+(function(){
+  // Safe from encoding issues: all non-ASCII strings as string literals
+  var emotions = [
+    {id:'calm', name:'Calm / 平静',   color:'#00d4ff', poem:'\u6d77\u9762\u5982\u955c\uff0c\u5fc3\u82e5\u6b62\u6c34',     author:'\u2014 \u6df1\u6d77\u5fae\u5149',      anim:'breathe'},
+    {id:'joy',  name:'Joy / 喜悦',    color:'#7dd3fc', poem:'\u661f\u5149\u70b9\u70b9\uff0c\u559c\u60a6\u5982\u98ce',     author:'\u2014 \u95ea\u70c1\u94f6\u6cb3',      anim:'bounce'},
+    {id:'sad',  name:'Sad / 忧伤',    color:'#a855f7', poem:'\u6708\u5149\u5982\u6c34\uff0c\u6d12\u843d\u5fc3\u95f4',     author:'\u2014 \u6708\u4e0b\u6f9a\u6f2a',      anim:'fade'},
+    {id:'angry',name:'Angry / 愤怒',  color:'#ff69b4', poem:'\u98ce\u66b4\u6765\u88ad\uff0c\u5fc3\u6f6e\u6f8e\u6e43',     author:'\u2014 \u96f7\u9706\u4e07\u94a7',      anim:'pulse'},
+    {id:'wait', name:'Hope / 期待',   color:'#ffffff', poem:'\u521d\u7efd\u7684\u82b1\u857e\uff0c\u6084\u7136\u7b49\u5f85',   author:'\u2014 \u7efd\u653e\u4e4b\u524d',      anim:'float'}
+  ];
+
+  var current = emotions[0];
+
+  var $title = document.getElementById('title');
+  var $poem = document.getElementById('poem');
+  var $poemAuthor = document.getElementById('poemAuthor');
+  var $buttons = document.getElementById('buttons');
+  var $topGrad = document.getElementById('topGrad');
+  var $girlBox = document.getElementById('girlBox');
+  var $hair = document.getElementById('hair');
+  var $head = document.getElementById('head');
+  var $body = document.getElementById('body');
+  var $skirt = document.getElementById('skirt');
+  var $glow = document.getElementById('glow');
+  var $armL = document.getElementById('armL');
+  var $armR = document.getElementById('armR');
+  var $blushL = document.getElementById('blushL');
+  var $blushR = document.getElementById('blushR');
+
+  // Buttons
+  emotions.forEach(function(em){
+    var b = document.createElement('button');
+    b.className = 'btn';
+    b.innerHTML = '<span class="dot"></span>' + em.name;
+    b.style.color = em.color;
+    b.onclick = function(){ apply(em); };
+    if(em.id === current.id) b.classList.add('active');
+    $buttons.appendChild(b);
+  });
+
+  function rgba(hex,a){
+    var h = hex.replace('#','');
+    if(h.length===3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    var r = parseInt(h.slice(0,2),16);
+    var g = parseInt(h.slice(2,4),16);
+    var b = parseInt(h.slice(4,6),16);
+    return 'rgba('+r+','+g+','+b+','+a+')';
+  }
+
+  function apply(em){
+    current = em;
+
+    // Colors
+    $title.style.color = em.color;
+    $title.style.textShadow = '0 0 6px '+em.color+',0 0 14px '+em.color+',0 0 28px '+rgba(em.color,.6);
+    $poem.style.color = em.color;
+    $poem.style.textShadow = '0 0 10px '+rgba(em.color,.5);
+    $poemAuthor.style.color = em.color;
+
+    $hair.style.boxShadow = '0 0 18px '+em.color;
+    $head.style.boxShadow = '0 0 12px '+rgba(em.color,.25);
+    $body.style.background = em.color;
+    $body.style.boxShadow = '0 0 20px '+rgba(em.color,.4);
+    $skirt.style.background = em.color;
+    $skirt.style.boxShadow = '0 0 15px '+rgba(em.color,.25);
+    $glow.style.background = em.color;
+    $blushL.style.background = em.color;
+    $blushR.style.background = em.color;
+
+    // Top gradient
+    $topGrad.style.background =
+      'linear-gradient(180deg,'+rgba(em.color,.12)+' 0,transparent 10%,transparent 90%,'+rgba(em.color,.12)+' 100%)';
+
+    // Buttons state
+    var list = $buttons.querySelectorAll('.btn');
+    for(var i=0;i<list.length;i++){
+      var active = list[i].querySelector('.dot').parentElement.textContent.indexOf(em.name.split('/')[0].trim())===0;
+      list[i].classList.toggle('active', emotions[i].id===em.id);
+      if(emotions[i].id===em.id){
+        list[i].style.boxShadow =
+          'inset -3px -3px 0 0 #1a1a4e, inset 3px 3px 0 0 '+em.color+', 0 0 18px '+rgba(em.color,.45);
+      }else{
+        list[i].style.boxShadow =
+          'inset -3px -3px 0 0 #1a1a4e, inset 3px 3px 0 0 #7dd3fc';
+      }
+    }
+
+    // Animation & arms
+    $girlBox.style.opacity = '';
+    $girlBox.style.animationName = '';
+    $girlBox.style.animation = '';
+    $girlBox.classList.remove('girl-box'); // reset trick
+    void $girlBox.offsetWidth;
+    $girlBox.classList.add('girl-box');
+
+    switch(em.anim){
+      case 'bounce':
+        $girlBox.style.animation = 'bounce-slow 1s ease-in-out infinite';
+        $armL.style.transform = 'rotate(-30deg)';
+        $armR.style.transform = 'rotate(30deg)';
+        break;
+      case 'fade':
+        $girlBox.style.animation = 'breathe 3s ease-in-out infinite';
+        $girlBox.style.opacity = '0.85';
+        $armL.style.transform = 'rotate(0deg)';
+        $armR.style.transform = 'rotate(0deg)';
+        break;
+      case 'pulse':
+        $girlBox.style.animation = 'pulse-glow 1.4s ease-in-out infinite';
+        $armL.style.transform = 'rotate(-15deg)';
+        $armR.style.transform = 'rotate(15deg)';
+        break;
+      case 'float':
+        $girlBox.style.animation = 'float-up 3s ease-in-out infinite';
+        $armL.style.transform = 'rotate(-10deg)';
+        $armR.style.transform = 'rotate(10deg)';
+        break;
+      default:
+        $girlBox.style.animation = 'breathe 3s ease-in-out infinite';
+        $armL.style.transform = 'rotate(0deg)';
+        $armR.style.transform = 'rotate(0deg)';
+    }
+
+    // Typewriter poem
+    typePoem(em.poem);
+    $poemAuthor.textContent = em.author;
+  }
+
+  var twTimer = null;
+  function typePoem(text){
+    if(twTimer){clearInterval(twTimer); twTimer=null}
+    $poem.textContent = '';
+    var i = 0;
+    twTimer = setInterval(function(){
+      if(i < text.length){
+        $poem.textContent = text.slice(0,i+1);
+        i++;
+      }else{
+        clearInterval(twTimer);
+        twTimer = null;
+      }
+    },90);
+  }
+
+  // CSS Stars - append 28 stars
+  var starsEl = document.getElementById('stars');
+  var N = 28;
+  for(var s=0;s<N;s++){
+    var d = document.createElement('div');
+    d.className = 's';
+    d.style.left = (Math.random()*100)+'%';
+    d.style.top = (Math.random()*100)+'%';
+    d.style.animationDelay = (Math.random()*2)+'s';
+    d.style.opacity = (Math.random()*0.5+0.3).toFixed(2);
+    starsEl.appendChild(d);
+  }
+
+  // initialize
+  apply(emotions[0]);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>学习计划 · 三日周期</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f7fb;
+    --bg-grad-1:#eef2ff;
+    --bg-grad-2:#f5f7fb;
+    --card:#ffffff;
+    --text:#1f2937;
+    --text-soft:#6b7280;
+    --text-light:#9ca3af;
+    --border:#e5e7eb;
+    --primary:#4f46e5;
+    --primary-soft:#eef2ff;
+    --primary-dark:#4338ca;
+    --success:#16a34a;
+    --success-soft:#dcfce7;
+    --danger:#dc2626;
+    --danger-soft:#fee2e2;
+    --warn:#d97706;
+    --warn-soft:#fef3c7;
+    --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+    --shadow-lg:0 4px 24px rgba(0,0,0,.08);
+    --radius:14px;
+    --radius-sm:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Noto Sans SC',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-grad-1), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, #fdf4ff, transparent 55%),
+      var(--bg-grad-2);
+    min-height:100vh;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:28px 18px 60px}
+
+  /* Header */
+  .app-header{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    margin-bottom:22px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand-logo{
+    width:42px;height:42px;border-radius:12px;
+    background:linear-gradient(135deg,#6366f1,#a855f7);
+    display:grid;place-items:center;color:#fff;font-weight:700;font-size:20px;
+    box-shadow:0 6px 18px rgba(99,102,241,.35);
+  }
+  .brand-text h1{font-size:20px;font-weight:700;letter-spacing:.5px}
+  .brand-text p{font-size:12px;color:var(--text-soft)}
+  .today-pill{
+    font-size:13px;color:var(--text-soft);background:var(--card);
+    padding:8px 14px;border-radius:999px;border:1px solid var(--border);
+    box-shadow:var(--shadow);
+  }
+
+  /* Cycle banner */
+  .cycle-banner{
+    background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);
+    color:#fff;border-radius:var(--radius);padding:22px 24px;
+    box-shadow:0 10px 30px rgba(79,70,229,.28);position:relative;overflow:hidden;
+    margin-bottom:22px;
+  }
+  .cycle-banner::after{
+    content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;
+    background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);
+    border-radius:50%;
+  }
+  .cycle-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;position:relative;z-index:1}
+  .cycle-info .cycle-label{font-size:12px;opacity:.85;letter-spacing:1px;text-transform:uppercase}
+  .cycle-info .cycle-day{font-size:34px;font-weight:700;line-height:1.1;margin-top:4px}
+  .cycle-info .cycle-day small{font-size:16px;font-weight:500;opacity:.85}
+  .cycle-meta{font-size:13px;opacity:.9;margin-top:6px}
+  .cycle-meta span{margin-right:14px;display:inline-block}
+  .cycle-meta b{font-weight:600}
+  .cycle-actions{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+  .cycle-progress{margin-top:16px;height:8px;background:rgba(255,255,255,.25);border-radius:999px;overflow:hidden;position:relative;z-index:1}
+  .cycle-progress > i{display:block;height:100%;background:#fff;border-radius:999px;transition:width .6s ease}
+  .cycle-hint{font-size:12px;opacity:.9;margin-top:8px;position:relative;z-index:1}
+
+  .btn{
+    border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:500;
+    padding:9px 16px;border-radius:10px;transition:all .15s ease;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .btn-primary{background:#fff;color:var(--primary-dark);}
+  .btn-primary:hover{background:#f3f4ff;transform:translateY(-1px)}
+  .btn-ghost{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+  .btn-ghost:hover{background:rgba(255,255,255,.25)}
+  .btn-solid{background:var(--primary);color:#fff}
+  .btn-solid:hover{background:var(--primary-dark);transform:translateY(-1px)}
+  .btn-soft{background:var(--primary-soft);color:var(--primary-dark)}
+  .btn-soft:hover{background:#e0e7ff}
+  .btn-danger-soft{background:var(--danger-soft);color:var(--danger)}
+  .btn-danger-soft:hover{background:#fecaca}
+  .btn-sm{padding:6px 12px;font-size:13px;border-radius:8px}
+  .btn-block{width:100%;justify-content:center}
+
+  /* Tabs */
+  .tabs{
+    display:flex;gap:4px;background:var(--card);padding:6px;border-radius:12px;
+    box-shadow:var(--shadow);margin-bottom:22px;border:1px solid var(--border);
+  }
+  .tab{
+    flex:1;border:none;background:transparent;cursor:pointer;font-family:inherit;
+    font-size:14px;font-weight:500;color:var(--text-soft);padding:10px 14px;
+    border-radius:8px;transition:all .15s ease;display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .tab:hover{color:var(--text);background:var(--bg)}
+  .tab.active{background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.25)}
+  .tab .badge{font-size:11px;background:rgba(255,255,255,.3);padding:1px 7px;border-radius:999px;min-width:20px;text-align:center}
+  .tab:not(.active) .badge{background:var(--danger-soft);color:var(--danger)}
+
+  /* Card */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:18px}
+  .card-title{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .card-title .left{display:flex;align-items:center;gap:8px}
+  .card-title .dot{width:8px;height:8px;border-radius:50%;background:var(--primary)}
+
+  /* Add form */
+  .add-form{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .add-form input[type=text]{
+    flex:1;min-width:200px;padding:11px 14px;font-size:14px;font-family:inherit;
+    border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);transition:all .15s;
+  }
+  .add-form input[type=text]:focus{outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+  .add-form select{
+    padding:11px 12px;font-size:14px;font-family:inherit;border:1px solid var(--border);
+    border-radius:10px;background:var(--bg);color:var(--text);cursor:pointer;
+  }
+  .add-form select:focus{outline:none;border-color:var(--primary)}
+
+  /* 10-day cycle checkin grid (screenshot style) */
+  .c10-card{
+    background:var(--card);border-radius:var(--radius);padding:20px 22px 18px;
+    border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:16px;
+  }
+  .c10-title{
+    display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;margin-bottom:16px;color:var(--text);
+  }
+  .c10-title .dot{width:10px;height:10px;background:#f97316;border-radius:50%}
+  .c10-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+  .c10-cell{
+    position:relative;aspect-ratio:1/1;background:#f8fafc;border-radius:14px;padding:6px 8px;
+    display:flex;flex-direction:column;justify-content:space-between;align-items:center;
+    transition:all .15s;border:1.5px solid transparent;cursor:pointer;
+  }
+  .c10-cell:hover{box-shadow:0 3px 10px rgba(0,0,0,.05);background:#fff}
+  .c10-cell.today{border-color:#f97316;box-shadow:0 0 0 2px #ffedd5}
+  .c10-cell .week{font-size:10px;color:#94a3b8;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+  .c10-cell .day{font-size:17px;font-weight:700;color:var(--text)}
+  .c10-cell.empty .day{color:#cbd5e1}
+  .c10-cell .mark{width:7px;height:7px;border-radius:50%;background:#cbd5e1}
+  .c10-cell.state-all .mark{background:var(--success)}
+  .c10-cell.state-partial .mark{background:var(--warn)}
+  .c10-cell.state-none .mark{background:var(--danger)}
+  .c10-legend{display:flex;gap:18px;align-items:center;font-size:12px;color:var(--text-soft);flex-wrap:wrap}
+  .c10-legend span{display:inline-flex;align-items:center;gap:6px}
+  .c10-legend .ldot{width:10px;height:10px;border-radius:50%}
+  .c10-legend .ldot.all{background:var(--success)}
+  .c10-legend .ldot.partial{background:var(--warn)}
+  .c10-legend .ldot.none{background:var(--danger)}
+  .c10-legend .ldot.today{background:#fff;border:1.5px solid #f97316}
+
+  /* Filters */
+  .filters{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+  .chip{
+    border:1px solid var(--border);background:var(--card);cursor:pointer;
+    font-family:inherit;font-size:13px;color:var(--text-soft);
+    padding:5px 12px;border-radius:999px;transition:all .15s;
+  }
+  .chip:hover{color:var(--text)}
+  .chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+  /* Day group */
+  .day-group{margin-bottom:22px}
+  .day-group:last-child{margin-bottom:0}
+  .day-group-title{
+    font-size:13px;color:var(--text-soft);font-weight:600;
+    display:flex;align-items:center;gap:10px;margin-bottom:10px;
+  }
+  .day-group-title .line{flex:1;height:1px;background:var(--border)}
+  .day-group-title .count{background:var(--bg);color:var(--text-soft);padding:1px 8px;border-radius:999px;font-size:11px}
+  .day-group-title.today{color:var(--primary)}
+  .day-group-title.today .count{background:var(--primary-soft);color:var(--primary-dark)}
+
+  /* Todo item */
+  .todo{
+    display:flex;align-items:flex-start;gap:12px;padding:13px 14px;
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
+    margin-bottom:8px;transition:all .15s ease;
+  }
+  .todo:hover{box-shadow:var(--shadow);border-color:#d1d5db}
+  .todo input[type=checkbox]{
+    appearance:none;width:20px;height:20px;border:2px solid var(--border);
+    border-radius:6px;cursor:pointer;flex-shrink:0;margin-top:2px;position:relative;
+    transition:all .15s;background:#fff;
+  }
+  .todo input[type=checkbox]:hover{border-color:var(--primary)}
+  .todo input[type=checkbox]:checked{background:var(--success);border-color:var(--success)}
+  .todo input[type=checkbox]:checked::after{
+    content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);
+  }
+  .todo-main{flex:1;min-width:0}
+  .todo-text{font-size:14.5px;color:var(--text);word-break:break-word}
+  .todo.completed .todo-text{text-decoration:line-through;color:var(--text-light)}
+  .todo.overdue{background:#fff5f5;border-color:#fecaca}
+  .todo.overdue .todo-text{color:var(--danger);font-weight:500}
+  .todo-meta{display:flex;align-items:center;gap:8px;margin-top:5px;flex-wrap:wrap}
+  .tag{font-size:11px;padding:2px 8px;border-radius:999px;font-weight:500}
+  .tag-day{background:var(--primary-soft);color:var(--primary-dark)}
+  .tag-overdue{background:var(--danger-soft);color:var(--danger)}
+  .tag-done{background:var(--success-soft);color:var(--success)}
+  .tag-today{background:var(--warn-soft);color:var(--warn)}
+  .todo-del{
+    border:none;background:transparent;cursor:pointer;color:var(--text-light);
+    padding:4px 6px;border-radius:6px;font-size:16px;line-height:1;transition:all .15s;
+    opacity:0;
+  }
+  .todo:hover .todo-del{opacity:1}
+  .todo-del:hover{background:var(--danger-soft);color:var(--danger)}
+
+  /* Empty state */
+  .empty{text-align:center;padding:40px 20px;color:var(--text-light)}
+  .empty .icon{font-size:42px;margin-bottom:10px;opacity:.5}
+  .empty p{font-size:14px}
+
+  /* Diary */
+  .diary-grid{display:grid;grid-template-columns:1fr;gap:12px}
+  .diary-entry{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
+    padding:16px 18px;cursor:pointer;transition:all .15s;position:relative;
+  }
+  .diary-entry:hover{box-shadow:var(--shadow);border-color:#d1d5db;transform:translateY(-1px)}
+  .diary-entry-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+  .diary-date{font-size:13px;color:var(--primary);font-weight:600}
+  .diary-time{font-size:12px;color:var(--text-light)}
+  .diary-title{font-size:15px;font-weight:600;margin-bottom:4px;color:var(--text)}
+  .diary-preview{font-size:13px;color:var(--text-soft);white-space:pre-wrap;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+  .diary-mood{font-size:18px;margin-right:6px}
+  .diary-entry-actions{display:flex;gap:4px;opacity:0;transition:opacity .15s}
+  .diary-entry:hover .diary-entry-actions{opacity:1}
+  .icon-btn{border:none;background:transparent;cursor:pointer;color:var(--text-light);padding:4px 6px;border-radius:6px;font-size:14px}
+  .icon-btn:hover{background:var(--bg);color:var(--text)}
+
+  /* Modal */
+  .modal-mask{
+    position:fixed;inset:0;background:rgba(17,24,39,.45);backdrop-filter:blur(4px);
+    z-index:50;display:none;align-items:flex-start;justify-content:center;padding:30px 16px;overflow:auto;
+  }
+  .modal-mask.show{display:flex}
+  .modal{
+    background:var(--card);border-radius:var(--radius);width:100%;max-width:620px;
+    box-shadow:var(--shadow-lg);padding:24px;margin:auto;animation:popIn .2s ease;
+  }
+  @keyframes popIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .modal h3{font-size:18px;margin-bottom:16px}
+  .modal-close{float:right;border:none;background:transparent;cursor:pointer;font-size:22px;color:var(--text-light);line-height:1;padding:0 4px}
+  .modal-close:hover{color:var(--text)}
+  .form-row{margin-bottom:14px}
+  .form-row label{display:block;font-size:13px;color:var(--text-soft);margin-bottom:6px;font-weight:500}
+  .form-row input[type=text],.form-row textarea{
+    width:100%;padding:11px 14px;font-size:14px;font-family:inherit;
+    border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);transition:all .15s;
+  }
+  .form-row input[type=text]:focus,.form-row textarea:focus{outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+  .form-row textarea{min-height:200px;resize:vertical;line-height:1.7}
+  .mood-picker{display:flex;gap:6px;flex-wrap:wrap}
+  .mood-opt{
+    border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:22px;
+    padding:6px 10px;border-radius:10px;transition:all .15s;
+  }
+  .mood-opt:hover{transform:scale(1.1)}
+  .mood-opt.active{border-color:var(--primary);background:var(--primary-soft);transform:scale(1.1)}
+  .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+
+  /* Review */
+  .review-hero{
+    text-align:center;padding:30px 20px;background:linear-gradient(135deg,#f0f9ff,#eef2ff);
+    border-radius:var(--radius);border:1px solid var(--border);margin-bottom:18px;
+  }
+  .review-hero h2{font-size:22px;margin-bottom:6px}
+  .review-hero p{color:var(--text-soft);font-size:13px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;text-align:center}
+  .stat-num{font-size:28px;font-weight:700;line-height:1}
+  .stat-label{font-size:12px;color:var(--text-soft);margin-top:4px}
+  .stat.success .stat-num{color:var(--success)}
+  .stat.danger .stat-num{color:var(--danger)}
+  .stat.primary .stat-num{color:var(--primary)}
+  .review-section{margin-bottom:18px}
+  .review-section h4{font-size:14px;margin-bottom:10px;color:var(--text)}
+  .review-list .todo{margin-bottom:6px}
+  .reflection{width:100%;min-height:140px;padding:12px 14px;font-size:14px;font-family:inherit;
+    border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);resize:vertical;line-height:1.7}
+  .reflection:focus{outline:none;border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+  .review-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+
+  .past-cycle{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
+    padding:14px 16px;margin-bottom:10px;
+  }
+  .past-cycle-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+  .past-cycle-head .dates{font-size:13px;color:var(--text-soft)}
+  .past-cycle-head .rate{font-size:13px;font-weight:600;color:var(--primary)}
+  .past-cycle-note{font-size:13px;color:var(--text-soft);white-space:pre-wrap;background:var(--bg);padding:8px 12px;border-radius:8px;border-left:3px solid var(--primary)}
+
+  /* Calendar */
+  .cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+  .cal-header h3{font-size:16px;font-weight:700}
+  .cal-nav{display:flex;gap:6px}
+  .cal-nav button{
+    border:1px solid var(--border);background:var(--card);cursor:pointer;
+    padding:6px 12px;border-radius:8px;font-size:13px;color:var(--text-soft);transition:all .15s;font-family:inherit;
+  }
+  .cal-nav button:hover{color:var(--primary);border-color:var(--primary);background:var(--primary-soft)}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+  .cal-wd{font-size:11px;color:var(--text-light);text-align:center;padding:6px 0;font-weight:600}
+  .cal-cell{
+    aspect-ratio:1/1;border:1px solid var(--border);border-radius:8px;padding:5px 6px;
+    display:flex;flex-direction:column;background:var(--card);position:relative;
+    cursor:default;transition:all .15s;min-height:64px;
+  }
+  .cal-cell.other-month{opacity:.4;background:var(--bg)}
+  .cal-cell .dnum{font-size:12px;color:var(--text-soft);font-weight:500}
+  .cal-cell.today{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-soft)}
+  .cal-cell.today .dnum{color:var(--primary);font-weight:700}
+  .cal-cell.has-tasks{cursor:pointer}
+  .cal-cell.has-tasks:hover{box-shadow:var(--shadow);transform:translateY(-1px);border-color:#d1d5db}
+  .cal-cell .pill{margin-top:auto;font-size:10px;font-weight:700;text-align:center;padding:2px 4px;border-radius:999px;line-height:1.3}
+  .cal-cell .pill.all{background:var(--success-soft);color:var(--success)}
+  .cal-cell .pill.partial{background:var(--warn-soft);color:var(--warn)}
+  .cal-cell .pill.none{background:var(--danger-soft);color:var(--danger)}
+  .cal-legend{display:flex;gap:16px;justify-content:center;margin-top:16px;font-size:11px;color:var(--text-soft);flex-wrap:wrap}
+  .cal-legend span{display:inline-flex;align-items:center;gap:5px}
+  .cal-legend i{width:11px;height:11px;border-radius:3px;display:inline-block;border:1px solid var(--border)}
+
+  /* Page switch nav */
+  .page-nav{
+    display:flex;gap:6px;justify-content:center;margin-bottom:18px;
+    background:var(--card);border:1px solid var(--border);border-radius:999px;
+    padding:5px;width:fit-content;margin-left:auto;margin-right:auto;box-shadow:var(--shadow);
+  }
+  .page-nav a{
+    text-decoration:none;font-size:13px;font-weight:500;color:var(--text-soft);
+    padding:7px 18px;border-radius:999px;transition:all .15s;display:inline-flex;align-items:center;gap:6px;
+  }
+  .page-nav a:hover{color:var(--text);background:var(--bg)}
+  .page-nav a.active{background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.3)}
+
+  /* Toast */
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:#1f2937;color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;
+    opacity:0;pointer-events:none;transition:all .3s ease;z-index:100;box-shadow:var(--shadow-lg);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* Responsive */
+  @media (max-width:640px){
+    .wrap{padding:18px 12px 40px}
+    .cycle-banner{padding:18px}
+    .cycle-info .cycle-day{font-size:28px}
+    .stats{grid-template-columns:1fr 1fr 1fr;gap:8px}
+    .stat-num{font-size:22px}
+    .todo-del{opacity:1}
+    .diary-entry-actions{opacity:1}
+    .tabs{font-size:13px}
+    .tab{padding:8px 6px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- Page nav -->
+  <nav class="page-nav">
+    <a href="study-plan.html" class="active">📋 学习计划</a>
+    <a href="fat-loss.html">🔥 减脂计划</a>
+  </nav>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo">学</div>
+      <div class="brand-text">
+        <h1>学习计划</h1>
+        <p>三日一周期 · 步步为营</p>
+      </div>
+    </div>
+    <div class="today-pill" id="todayPill"></div>
+  </header>
+
+  <!-- Cycle banner -->
+  <section class="cycle-banner" id="cycleBanner"></section>
+
+  <!-- Tabs -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="plan">📋 计划</button>
+    <button class="tab" data-tab="calendar">📅 日历</button>
+    <button class="tab" data-tab="diary">📔 日记 <span class="badge" id="diaryBadge" style="display:none">0</span></button>
+    <button class="tab" data-tab="review">🔍 复盘</button>
+  </nav>
+
+  <!-- Plan view -->
+  <section id="view-plan" class="view">
+    <div class="card">
+      <div class="card-title">
+        <div class="left"><span class="dot"></span>添加计划</div>
+      </div>
+      <form class="add-form" id="addForm" autocomplete="off">
+        <input type="text" id="todoInput" placeholder="今天要学什么？比如：复习高数第三章、背50个单词…" />
+        <select id="daySelect"></select>
+        <button type="submit" class="btn btn-solid">添加</button>
+      </form>
+    </div>
+
+    <!-- 10-day checkin cycle grid -->
+    <div class="c10-card">
+      <div class="c10-title"><span class="dot"></span>近 10 天打卡</div>
+      <div class="c10-grid" id="c10Grid"></div>
+      <div class="c10-legend">
+        <span><i class="ldot all"></i>全部完成</span>
+        <span><i class="ldot partial"></i>部分完成</span>
+        <span><i class="ldot none"></i>逾期未完成</span>
+        <span><i class="ldot today"></i>今天</span>
+      </div>
+    </div>
+
+    <div class="filters" id="filters">
+      <button class="chip active" data-filter="all">全部</button>
+      <button class="chip" data-filter="today">今天</button>
+      <button class="chip" data-filter="pending">未完成</button>
+      <button class="chip" data-filter="overdue">逾期</button>
+      <button class="chip" data-filter="done">已完成</button>
+    </div>
+
+    <div id="todoList"></div>
+  </section>
+
+  <!-- Calendar view -->
+  <section id="view-calendar" class="view" style="display:none">
+    <div class="card">
+      <div class="card-title"><div class="left"><span class="dot"></span>学习日历 · 打勾同步</div></div>
+      <div id="calendarContent"></div>
+    </div>
+  </section>
+
+  <!-- Diary view -->
+  <section id="view-diary" class="view" style="display:none">
+    <div class="card">
+      <div class="card-title">
+        <div class="left"><span class="dot"></span>我的日记</div>
+        <button class="btn btn-soft btn-sm" id="writeDiaryBtn">✏️ 写日记</button>
+      </div>
+      <div id="diaryList" class="diary-grid"></div>
+    </div>
+  </section>
+
+  <!-- Review view -->
+  <section id="view-review" class="view" style="display:none">
+    <div id="reviewContent"></div>
+  </section>
+</div>
+
+<!-- Diary modal -->
+<div class="modal-mask" id="diaryModal">
+  <div class="modal">
+    <button class="modal-close" data-close="diaryModal">×</button>
+    <h3 id="diaryModalTitle">写日记</h3>
+    <div class="form-row">
+      <label>心情</label>
+      <div class="mood-picker" id="moodPicker"></div>
+    </div>
+    <div class="form-row">
+      <label>标题（可选）</label>
+      <input type="text" id="diaryTitle" placeholder="给今天起个名字…" />
+    </div>
+    <div class="form-row">
+      <label>内容</label>
+      <textarea id="diaryContent" placeholder="写下今天的发生、想法、感受…"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-soft" data-close="diaryModal">取消</button>
+      <button class="btn btn-solid" id="saveDiaryBtn">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm modal -->
+<div class="modal-mask" id="confirmModal">
+  <div class="modal" style="max-width:420px">
+    <h3 id="confirmTitle">确认</h3>
+    <p id="confirmText" style="color:var(--text-soft);font-size:14px;margin-bottom:8px"></p>
+    <div class="modal-footer">
+      <button class="btn btn-soft" data-close="confirmModal">取消</button>
+      <button class="btn btn-solid" id="confirmOkBtn">确定</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================== 数据层 ===================== */
+const STORAGE_KEY = 'study_plan_data_v1';
+const MOODS = ['😊','😌','💪','🤔','😴','😕','😢'];
+
+const state = {
+  cycle: null,       // {id, startDate, reviewed, reflection}
+  todos: [],          // [{id, text, day:1|2|3, done, createdAt, cycleId}]
+  diaries: [],        // [{id, title, content, mood, createdAt}]
+  history: [],        // 已复盘的周期 [{cycle, todos, reflection}]
+  filter: 'all',
+  currentTab: 'plan',
+  editingDiaryId: null,
+  selectedMood: '😊',
+};
+
+function load(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const data = JSON.parse(raw);
+      state.todos = Array.isArray(data.todos)?data.todos:[];
+      state.diaries = Array.isArray(data.diaries)?data.diaries:[];
+      state.history = Array.isArray(data.history)?data.history:[];
+      // 校验 cycle 完整性，脏数据丢弃
+      state.cycle = (data.cycle && typeof data.cycle==='object' && typeof data.cycle.startDate==='string') ? data.cycle : null;
+    }
+  }catch(e){console.warn('load error',e)}
+}
+function save(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    cycle: state.cycle, todos: state.todos, diaries: state.diaries, history: state.history
+  }));
+}
+
+/* ===================== 工具 ===================== */
+function pad(n){return n<10?'0'+n:''+n}
+function todayStr(){
+  const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+}
+function parseDate(s){
+  if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s)){return new Date(isNaN(Date.parse(s))?Date.now():Date.parse(s))}
+  const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)
+}
+function fmtDate(d){
+  const dt = (d instanceof Date)?d:parseDate(d);
+  return `${dt.getMonth()+1}月${dt.getDate()}日`;
+}
+function fmtDateFull(s){
+  const dt = parseDate(s);
+  return `${dt.getFullYear()}年${dt.getMonth()+1}月${dt.getDate()}日`;
+}
+function daysBetween(a,b){ // a,b date str -> 差天数
+  const da=parseDate(a),db=parseDate(b);
+  return Math.round((db-da)/86400000);
+}
+function addDays(s,n){const d=parseDate(s);d.setDate(d.getDate()+n);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+// 任务对应的日期：周期起始 + (day-1) 天，纯系统日期推算，无写死
+function cycleStartById(id){
+  if(state.cycle && state.cycle.id===id) return state.cycle.startDate;
+  const h=state.history.find(h=>h.cycle&&h.cycle.id===id);
+  return h?h.cycle.startDate:null;
+}
+function todoDate(t){const s=cycleStartById(t.cycleId);return s?addDays(s,t.day-1):null}
+function todosForDate(D){
+  const all=[...state.todos];
+  state.history.forEach(h=>{if(Array.isArray(h.todos))all.push(...h.todos)});
+  return all.filter(t=>todoDate(t)===D);
+}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1800)}
+
+/* ===================== 周期管理 ===================== */
+function ensureCycle(){
+  // cycle 缺少 startDate 视为无效，重建
+  if(state.cycle && typeof state.cycle.startDate!=='string'){
+    state.cycle = null;
+  }
+  if(state.cycle){
+    const today = todayStr();
+    const start = state.cycle.startDate;
+    const diff = daysBetween(start, today);
+    if(diff >= 3 && !state.cycle.reviewed){
+      // 周期已结束等待复盘，保留状态
+      return;
+    }
+    // 周期仍在3天内 或 已复盘（保留显示历史周期）
+    return;
+  }
+  // 没有周期 -> 自动创建
+  startNewCycle(false);
+}
+function startNewCycle(silent){
+  // 若存在已结束未复盘周期，先归档到历史（未复盘也归档）
+  if(state.cycle){
+    state.history.push({
+      cycle: state.cycle,
+      todos: state.todos.filter(t=>t.cycleId===state.cycle.id),
+      reflection: state.cycle.reflection || ''
+    });
+  }
+  const startDate = todayStr();
+  state.cycle = {id:uid(),startDate,reviewed:false,reflection:''};
+  // 清空当前 todos（已归档）
+  state.todos = [];
+  save();
+  if(!silent) toast('新周期已开启，加油！💪');
+  renderAll();
+}
+
+function cycleInfo(){
+  if(!state.cycle) return null;
+  const today = todayStr();
+  const start = state.cycle.startDate;
+  const diff = daysBetween(start, today); // 0,1,2 -> 第1,2,3天
+  const dayIndex = diff + 1; // 1..3
+  const endDate = addDays(start,2);
+  const isEnded = diff >= 3;
+  const isReviewed = !!state.cycle.reviewed;
+  // 当前周期第几天（用于显示），若已结束则固定为3
+  const displayDay = Math.min(Math.max(dayIndex,1),3);
+  const daysToReview = Math.max(0, 3 - diff);
+  return {start,endDate,today,diff,dayIndex,displayDay,isEnded,isReviewed,daysToReview};
+}
+
+/* ===================== 渲染：周期横幅 ===================== */
+function renderCycleBanner(){
+  const c = cycleInfo();
+  const box = document.getElementById('cycleBanner');
+  if(!c){box.innerHTML='';return}
+
+  let progress = 0;
+  if(c.isEnded) progress = 100;
+  else progress = Math.round((c.diff / 3) * 100); // 0,33,66,100
+
+  let hint = '';
+  let actions = '';
+  if(c.isEnded && !c.isReviewed){
+    hint = '本周期已结束，前往「复盘」总结并开启下一周期';
+    actions = `<button class="btn btn-primary" onclick="switchTab('review')">去复盘</button>`;
+  } else if(c.isEnded && c.isReviewed){
+    hint = '已复盘完成，可开启下一周期继续学习';
+    actions = `<button class="btn btn-primary" onclick="confirmStartNewCycle()">开启新周期</button>`;
+  } else {
+    if(c.diff===0) hint = '第 1 天 · 良好开端';
+    else if(c.diff===1) hint = '第 2 天 · 保持节奏';
+    else hint = '第 3 天 · 冲刺收官';
+    if(c.daysToReview>0) hint += ` · ${c.daysToReview} 天后复盘`;
+    actions = `<button class="btn btn-ghost" onclick="confirmStartNewCycle()">提前结束</button>`;
+  }
+
+  box.innerHTML = `
+    <div class="cycle-row">
+      <div class="cycle-info">
+        <div class="cycle-label">CURRENT CYCLE</div>
+        <div class="cycle-day">${c.displayDay}<small> / 3 天</small></div>
+        <div class="cycle-meta">
+          <span>开始 <b>${fmtDate(c.start)}</b></span>
+          <span>结束 <b>${fmtDate(c.end)}</b></span>
+          <span>今天 <b>${fmtDate(c.today)}</b></span>
+        </div>
+      </div>
+      <div class="cycle-actions">${actions}</div>
+    </div>
+    <div class="cycle-progress"><i style="width:${progress}%"></i></div>
+    <div class="cycle-hint">${hint}</div>
+  `;
+}
+
+/* ===================== 渲染：计划列表 ===================== */
+function renderDaySelect(){
+  const sel = document.getElementById('daySelect');
+  const c = cycleInfo();
+  if(!c){return}
+  const todayDay = c.diff >= 0 && c.diff < 3 ? c.diff+1 : 3;
+  const opts = [
+    {v:1,label:'第 1 天'},
+    {v:2,label:'第 2 天'},
+    {v:3,label:'第 3 天'},
+  ];
+  sel.innerHTML = opts.map(o=>`<option value="${o.v}" ${o.v===todayDay?'selected':''}>${o.label}</option>`).join('');
+}
+
+function renderTodoList(){
+  const list = document.getElementById('todoList');
+  const c = cycleInfo();
+  const cycleTodos = state.todos.filter(t=>t.cycleId===state.cycle?.id);
+
+  if(cycleTodos.length===0){
+    list.innerHTML = `
+      <div class="empty">
+        <div class="icon">📝</div>
+        <p>还没有计划，添加第一条开始吧</p>
+      </div>`;
+    return;
+  }
+
+  // 应用过滤
+  const today = todayStr();
+  const todayDiff = c ? c.diff : 0;
+  let filtered = cycleTodos;
+  if(state.filter==='today'){
+    filtered = cycleTodos.filter(t=>{
+      const tDiff = daysBetween(c.start, today) ;
+      return t.day === Math.min(Math.max(tDiff+1,1),3) && !c.isEnded;
+    });
+  } else if(state.filter==='pending'){
+    filtered = cycleTodos.filter(t=>!t.done);
+  } else if(state.filter==='overdue'){
+    filtered = cycleTodos.filter(t=>{
+      if(t.done) return false;
+      const tDiff = daysBetween(c.start, today);
+      return t.day <= tDiff; // 计划第N天且今天已过该天
+    });
+  } else if(state.filter==='done'){
+    filtered = cycleTodos.filter(t=>t.done);
+  }
+
+  // 按天分组
+  const groups = {1:[],2:[],3:[]};
+  filtered.forEach(t=>{if(groups[t.day])groups[t.day].push(t)});
+
+  const dayNames = {1:'第 1 天',2:'第 2 天',3:'第 3 天'};
+  const todayDayNum = c.isEnded? null : (Math.min(Math.max(todayDiff+1,1),3));
+
+  let html = '';
+  [1,2,3].forEach(day=>{
+    if(groups[day].length===0) return;
+    const isToday = day===todayDayNum;
+    html += `
+      <div class="day-group">
+        <div class="day-group-title ${isToday?'today':''}">
+          <span>${dayNames[day]} ${isToday?'· 今天':''}</span>
+          <span class="line"></span>
+          <span class="count">${groups[day].length}</span>
+        </div>
+        ${groups[day].map(t=>todoHtml(t,c)).join('')}
+      </div>`;
+  });
+  if(!html){
+    html = `<div class="empty"><div class="icon">🔍</div><p>该筛选下没有计划</p></div>`;
+  }
+  list.innerHTML = html;
+}
+
+function todoHtml(t,c){
+  const todayDiff = c.diff;
+  const isOverdue = !t.done && t.day <= todayDiff; // 计划在第N天及之前，今天已超过该天 -> 逾期
+  // 严格：第N天的任务，到第N天结束（即diff>=day）才算逾期
+  const overdue = !t.done && todayDiff >= t.day;
+  const cls = ['todo'];
+  if(t.done) cls.push('completed');
+  if(overdue) cls.push('overdue');
+  const tags = [];
+  if(t.done){
+    tags.push('<span class="tag tag-done">已完成</span>');
+  } else if(overdue){
+    tags.push('<span class="tag tag-overdue">逾期</span>');
+  } else if(t.day === Math.min(Math.max(todayDiff+1,1),3) && !c.isEnded){
+    tags.push('<span class="tag tag-today">今天</span>');
+  } else {
+    tags.push(`<span class="tag tag-day">第 ${t.day} 天</span>`);
+  }
+  return `
+    <div class="${cls.join(' ')}" data-id="${t.id}">
+      <input type="checkbox" ${t.done?'checked':''} onchange="toggleTodo('${t.id}')"/>
+      <div class="todo-main">
+        <div class="todo-text">${escapeHtml(t.text)}</div>
+        <div class="todo-meta">${tags.join('')}</div>
+      </div>
+      <button class="todo-del" title="删除" onclick="deleteTodo('${t.id}')">×</button>
+    </div>`;
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
+/* ===================== 渲染：日记 ===================== */
+function renderDiaryList(){
+  const box = document.getElementById('diaryList');
+  const diaries = [...state.diaries].sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
+  // 更新 tab badge
+  const badge = document.getElementById('diaryBadge');
+  if(state.diaries.length>0){badge.style.display='inline-block';badge.textContent=state.diaries.length}
+  else{badge.style.display='none'}
+
+  if(diaries.length===0){
+    box.innerHTML = `<div class="empty"><div class="icon">📔</div><p>还没有日记，点击「写日记」记录今天</p></div>`;
+    return;
+  }
+  box.innerHTML = diaries.map(d=>{
+    const dt = new Date(d.createdAt);
+    const dateStr = `${dt.getMonth()+1}月${dt.getDate()}日`;
+    const timeStr = `${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
+    const preview = d.content || '';
+    return `
+      <div class="diary-entry" onclick="openDiary('${d.id}')">
+        <div class="diary-entry-head">
+          <div>
+            <span class="diary-mood">${d.mood||'📝'}</span>
+            <span class="diary-date">${dateStr}</span>
+            <span class="diary-time">${timeStr}</span>
+          </div>
+          <div class="diary-entry-actions" onclick="event.stopPropagation()">
+            <button class="icon-btn" title="删除" onclick="deleteDiary('${d.id}',event)">🗑</button>
+          </div>
+        </div>
+        ${d.title?`<div class="diary-title">${escapeHtml(d.title)}</div>`:''}
+        <div class="diary-preview">${escapeHtml(preview)}</div>
+      </div>`;
+  }).join('');
+}
+
+function renderMoodPicker(){
+  const box = document.getElementById('moodPicker');
+  box.innerHTML = MOODS.map(m=>`<div class="mood-opt ${m===state.selectedMood?'active':''}" data-mood="${m}" onclick="selectMood('${m}')">${m}</div>`).join('');
+}
+function selectMood(m){state.selectedMood=m;renderMoodPicker()}
+function openDiary(id){
+  const d = state.diaries.find(x=>x.id===id);
+  if(!d) return;
+  state.editingDiaryId = id;
+  state.selectedMood = d.mood || '😊';
+  document.getElementById('diaryModalTitle').textContent = '编辑日记';
+  document.getElementById('diaryTitle').value = d.title||'';
+  document.getElementById('diaryContent').value = d.content||'';
+  renderMoodPicker();
+  document.getElementById('diaryModal').classList.add('show');
+}
+function openNewDiary(){
+  state.editingDiaryId = null;
+  state.selectedMood = '😊';
+  document.getElementById('diaryModalTitle').textContent = '写日记';
+  document.getElementById('diaryTitle').value = '';
+  document.getElementById('diaryContent').value = '';
+  renderMoodPicker();
+  document.getElementById('diaryModal').classList.add('show');
+}
+function saveDiary(){
+  const title = document.getElementById('diaryTitle').value.trim();
+  const content = document.getElementById('diaryContent').value.trim();
+  if(!content){toast('请写点内容吧');return}
+  if(state.editingDiaryId){
+    const d = state.diaries.find(x=>x.id===state.editingDiaryId);
+    if(d){d.title=title;d.content=content;d.mood=state.selectedMood}
+    toast('日记已更新');
+  } else {
+    state.diaries.push({id:uid(),title,content,mood:state.selectedMood,createdAt:new Date().toISOString()});
+    toast('日记已保存 📔');
+  }
+  save();
+  document.getElementById('diaryModal').classList.remove('show');
+  renderDiaryList();
+}
+function deleteDiary(id,e){
+  e&&e.stopPropagation();
+  showConfirm('删除日记','确定删除这条日记吗？此操作不可撤销。',()=>{
+    state.diaries = state.diaries.filter(x=>x.id!==id);
+    save();renderDiaryList();toast('已删除');
+  });
+}
+
+/* ===================== 渲染：复盘 ===================== */
+function renderReview(){
+  const box = document.getElementById('reviewContent');
+  const c = cycleInfo();
+  if(!c){box.innerHTML='';return}
+  const cycleTodos = state.todos.filter(t=>t.cycleId===state.cycle.id);
+  const done = cycleTodos.filter(t=>t.done).length;
+  const total = cycleTodos.length;
+  const incomplete = total - done;
+  const rate = total>0 ? Math.round(done/total*100) : 0;
+
+  let html = '';
+  if(!c.isEnded){
+    html += `
+      <div class="review-hero">
+        <h2>周期进行中</h2>
+        <p>当前是第 ${c.displayDay} 天，周期未结束。可以在周期结束后再来复盘，或现在就提前总结。</p>
+      </div>`;
+  } else {
+    html += `
+      <div class="review-hero">
+        <h2>${c.isReviewed?'本周期已复盘':'周期复盘'}</h2>
+        <p>${fmtDateFull(c.start)} ~ ${fmtDateFull(c.end)} · 为期三天的学习告一段落</p>
+      </div>`;
+  }
+
+  html += `
+    <div class="stats">
+      <div class="stat success"><div class="stat-num">${done}</div><div class="stat-label">已完成</div></div>
+      <div class="stat danger"><div class="stat-num">${incomplete}</div><div class="stat-label">未完成</div></div>
+      <div class="stat primary"><div class="stat-num">${rate}%</div><div class="stat-label">完成率</div></div>
+    </div>`;
+
+  if(total===0){
+    html += `<div class="empty"><div class="icon">📭</div><p>本周期没有计划，复盘意义不大。</p></div>`;
+  } else {
+    html += `<div class="review-section"><h4>计划明细</h4><div class="review-list">`;
+    cycleTodos.forEach(t=>{
+      const overdue = !t.done && c.diff >= t.day;
+      const cls = ['todo'];
+      if(t.done) cls.push('completed');
+      if(overdue) cls.push('overdue');
+      let tag = '';
+      if(t.done) tag='<span class="tag tag-done">完成</span>';
+      else if(overdue) tag='<span class="tag tag-overdue">未完成·逾期</span>';
+      else tag='<span class="tag tag-day">未完成</span>';
+      html += `<div class="${cls.join(' ')}"><div class="todo-main"><div class="todo-text">${escapeHtml(t.text)}</div><div class="todo-meta"><span class="tag tag-day">第 ${t.day} 天</span>${tag}</div></div></div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  // 反思
+  const refl = state.cycle.reflection || '';
+  html += `
+    <div class="review-section">
+      <h4>反思与总结</h4>
+      <textarea class="reflection" id="reflectionInput" placeholder="完成了什么？哪些没做到？为什么？下一个周期要怎么调整？">${escapeHtml(refl)}</textarea>
+    </div>`;
+
+  html += `<div class="review-actions">`;
+  if(c.isEnded && !c.isReviewed){
+    html += `<button class="btn btn-soft" onclick="saveReflection()">保存反思</button>`;
+    html += `<button class="btn btn-solid" onclick="finishReview()">完成复盘 · 开启新周期</button>`;
+  } else if(c.isEnded && c.isReviewed){
+    html += `<button class="btn btn-soft" onclick="saveReflection()">更新反思</button>`;
+    html += `<button class="btn btn-solid" onclick="confirmStartNewCycle()">开启新周期</button>`;
+  } else {
+    html += `<button class="btn btn-soft" onclick="saveReflection()">保存反思</button>`;
+    html += `<button class="btn btn-solid" onclick="finishReview()">提前复盘 · 开启新周期</button>`;
+  }
+  html += `</div>`;
+
+  // 历史周期
+  if(state.history.length>0){
+    html += `<div class="card" style="margin-top:18px">
+      <div class="card-title"><div class="left"><span class="dot"></span>历史周期</div></div>`;
+    [...state.history].reverse().forEach(h=>{
+      const hTodos = h.todos||[];
+      const hDone = hTodos.filter(t=>t.done).length;
+      const hTotal = hTodos.length;
+      const hRate = hTotal>0?Math.round(hDone/hTotal*100):0;
+      const hStart = h.cycle.startDate;
+      const hEnd = addDays(hStart,2);
+      html += `
+        <div class="past-cycle">
+          <div class="past-cycle-head">
+            <span class="dates">${fmtDate(hStart)} ~ ${fmtDate(hEnd)}</span>
+            <span class="rate">完成 ${hDone}/${hTotal} · ${hRate}%</span>
+          </div>
+          ${h.reflection?`<div class="past-cycle-note">${escapeHtml(h.reflection)}</div>`:'<div class="past-cycle-note" style="opacity:.6">（无反思）</div>'}
+        </div>`;
+    });
+    html += `</div>`;
+  }
+
+  box.innerHTML = html;
+}
+
+function saveReflection(){
+  if(!state.cycle){return}
+  const v = document.getElementById('reflectionInput').value;
+  state.cycle.reflection = v;
+  save();
+  toast('反思已保存');
+}
+function finishReview(){
+  if(!state.cycle){return}
+  const v = document.getElementById('reflectionInput')?.value || '';
+  state.cycle.reflection = v;
+  state.cycle.reviewed = true;
+  save();
+  toast('复盘完成，开启新周期 🎉');
+  startNewCycle(true);
+  switchTab('plan');
+}
+
+/* ===================== 渲染：日历（打勾同步）===================== */
+let calYear, calMonth; // 当前查看的月份，随系统日期初始化
+function initCalendar(){const d=new Date();calYear=d.getFullYear();calMonth=d.getMonth()}
+function renderCalendar(){
+  const box=document.getElementById('calendarContent');
+  if(!box) return;
+  const monthNames=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  const today=todayStr();
+  let html=`<div class="cal-header">
+    <button class="cal-nav" id="calPrev">‹ 上月</button>
+    <h3>${calYear}年 ${monthNames[calMonth]}</h3>
+    <div class="cal-nav"><button id="calToday">回到今天</button><button id="calNext">下月 ›</button></div>
+  </div>`;
+  const wds=['一','二','三','四','五','六','日'];
+  html+=`<div class="cal-grid">`;
+  wds.forEach(w=>html+=`<div class="cal-wd">周${w}</div>`);
+  // 周一为一周起点
+  const first=new Date(calYear,calMonth,1);
+  const startOffset=(first.getDay()+6)%7;
+  const cellStart=new Date(calYear,calMonth,1-startOffset);
+  for(let i=0;i<42;i++){
+    const dt=new Date(cellStart);dt.setDate(cellStart.getDate()+i);
+    const ds=dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate());
+    const inMonth=dt.getMonth()===calMonth;
+    const todos=todosForDate(ds);
+    const done=todos.filter(t=>t.done).length;
+    const total=todos.length;
+    let cls='cal-cell';
+    if(!inMonth)cls+=' other-month';
+    if(ds===today)cls+=' today';
+    let pill='';
+    if(total>0){
+      cls+=' has-tasks';
+      const allDone=done===total;
+      const isPast=ds<today;
+      const pillCls = allDone?'all':((isPast&&done===0)?'none':'partial');
+      pill=`<div class="pill ${pillCls}">${done}/${total}</div>`;
+    }
+    html+=`<div class="${cls}" ${total>0?`onclick="calClickDate('${ds}')"`:''}>
+      <div class="dnum">${dt.getDate()}</div>${pill}
+    </div>`;
+  }
+  html+=`</div>`;
+  html+=`<div class="cal-legend">
+    <span><i style="background:var(--success-soft);border-color:var(--success)"></i>全部完成</span>
+    <span><i style="background:var(--warn-soft);border-color:var(--warn)"></i>部分完成</span>
+    <span><i style="background:var(--danger-soft);border-color:var(--danger)"></i>逾期未完成</span>
+    <span><i style="background:var(--primary-soft);border-color:var(--primary)"></i>今天</span>
+  </div>`;
+  box.innerHTML=html;
+  document.getElementById('calPrev').onclick=()=>{calMonth--;if(calMonth<0){calMonth=11;calYear--}renderCalendar()};
+  document.getElementById('calNext').onclick=()=>{calMonth++;if(calMonth>11){calMonth=0;calYear++}renderCalendar()};
+  document.getElementById('calToday').onclick=()=>{const d=new Date();calYear=d.getFullYear();calMonth=d.getMonth();renderCalendar()};
+}
+function calClickDate(ds){
+  const todos=todosForDate(ds);
+  const inCurrent=state.cycle && todos.some(t=>t.cycleId===state.cycle.id);
+  if(inCurrent){
+    switchTab('plan');
+    state.filter='all';
+    document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x.dataset.filter==='all'));
+    renderTodoList();
+    toast('已跳转到计划视图');
+  }else if(todos.length>0){
+    switchTab('review');
+    toast('该日属历史周期，可在复盘查看');
+  }else{
+    toast('该日无计划');
+  }
+}
+
+/* ===================== 渲染：10 天打卡周期网格（截图风格）===================== */
+function render10DayGrid(){
+  const grid=document.getElementById('c10Grid');
+  if(!grid) return;
+  const today=todayStr();
+  const weekShort=['一','二','三','四','五','六','日'];
+  // 近 10 天：[today-9 ... today]
+  const days=[];
+  for(let i=9;i>=0;i--) days.push(addDays(today,-i));
+  let html='';
+  days.forEach(ds=>{
+    const dt=parseDate(ds);
+    const wd=dt.getDay(); // 0 日 ... 6 六
+    const wLabel=weekShort[(wd+6)%7]; // 周一为第0
+    const dNum=dt.getDate();
+    const todos=todosForDate(ds);
+    const done=todos.filter(t=>t.done).length;
+    const total=todos.length;
+    const isPast=ds<today;
+    let cls='c10-cell';
+    let stateCls='';
+    if(ds===today) cls+=' today';
+    if(total>0){
+      if(done===total) stateCls='state-all';
+      else if(isPast && done===0) stateCls='state-none';
+      else stateCls='state-partial';
+    }
+    if(stateCls) cls+=' '+stateCls;
+    html+=`<div class="${cls}" ${total>0?`onclick="calClickDate('${ds}')"`:''}>
+      <span class="week">${wLabel}</span>
+      <span class="day">${dNum}</span>
+      <span class="mark" title="${total>0?`任务 ${done}/${total}`:'无计划'}"></span>
+    </div>`;
+  });
+  grid.innerHTML=html;
+}
+
+/* ===================== 交互 ===================== */
+function toggleTodo(id){
+  const t = state.todos.find(x=>x.id===id);
+  if(!t) return;
+  t.done = !t.done;
+  save();
+  renderTodoList();
+  renderReview();
+  renderCalendar();
+  render10DayGrid();
+}
+function deleteTodo(id){
+  showConfirm('删除计划','确定删除这条计划吗？',()=>{
+    state.todos = state.todos.filter(x=>x.id!==id);
+    save();renderTodoList();renderReview();renderCalendar();render10DayGrid();toast('已删除');
+  });
+}
+function addTodo(text,day){
+  if(!state.cycle){toast('请先开启周期');return}
+  state.todos.push({id:uid(),text,day:parseInt(day),done:false,createdAt:new Date().toISOString(),cycleId:state.cycle.id});
+  save();
+  renderTodoList();
+  renderReview();
+  renderCalendar();
+  render10DayGrid();
+}
+
+function switchTab(tab){
+  state.currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  document.getElementById('view-plan').style.display = tab==='plan'?'':'none';
+  document.getElementById('view-calendar').style.display = tab==='calendar'?'':'none';
+  document.getElementById('view-diary').style.display = tab==='diary'?'':'none';
+  document.getElementById('view-review').style.display = tab==='review'?'':'none';
+  if(tab==='review') renderReview();
+  if(tab==='diary') renderDiaryList();
+  if(tab==='plan') renderTodoList();
+  if(tab==='calendar') renderCalendar();
+}
+
+function confirmStartNewCycle(){
+  const c = cycleInfo();
+  let msg = '确定开启新的三天周期吗？历史周期、日记、复盘记录都会完整保留。';
+  if(c && !c.isEnded){
+    msg = '当前周期尚未结束（第 '+c.displayDay+' 天）。提前结束将：清空当前周期进度并开启新周期；当前计划归档到「历史周期」；日记与复盘记录完整保留。确定继续吗？';
+  } else if(c && !c.isReviewed){
+    msg = '本周期尚未复盘，建议先去复盘。仍要直接开启新周期？（历史周期、日记、复盘都会保留）';
+  }
+  showConfirm('开启新周期',msg,()=>startNewCycle(false));
+}
+
+/* Confirm modal */
+let confirmCb = null;
+function showConfirm(title,text,cb){
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmText').textContent = text;
+  confirmCb = cb;
+  document.getElementById('confirmModal').classList.add('show');
+}
+document.getElementById('confirmOkBtn').addEventListener('click',()=>{
+  document.getElementById('confirmModal').classList.remove('show');
+  if(confirmCb){confirmCb();confirmCb=null}
+});
+
+/* ===================== 绑定事件 ===================== */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>switchTab(t.dataset.tab));
+});
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    state.filter = c.dataset.filter;
+    document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));
+    renderTodoList();
+  });
+});
+document.getElementById('addForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const text = document.getElementById('todoInput').value.trim();
+  const day = document.getElementById('daySelect').value;
+  if(!text){toast('请输入计划内容');return}
+  addTodo(text,day);
+  document.getElementById('todoInput').value='';
+  document.getElementById('todoInput').focus();
+});
+document.getElementById('writeDiaryBtn').addEventListener('click',openNewDiary);
+document.getElementById('saveDiaryBtn').addEventListener('click',saveDiary);
+document.querySelectorAll('[data-close]').forEach(el=>{
+  el.addEventListener('click',()=>document.getElementById(el.dataset.close).classList.remove('show'));
+});
+// 点击遮罩关闭
+document.querySelectorAll('.modal-mask').forEach(m=>{
+  m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')});
+});
+
+/* ===================== 初始化 ===================== */
+function renderAll(){
+  renderCycleBanner();
+  renderDaySelect();
+  render10DayGrid();
+  renderTodoList();
+  renderCalendar();
+  renderDiaryList();
+  renderReview();
+}
+function init(){
+  try{
+    // 今日（系统日期）
+    const now = new Date();
+    const week = ['日','一','二','三','四','五','六'];
+    document.getElementById('todayPill').textContent = `今天 ${now.getMonth()+1}月${now.getDate()}日 · 星期${week[now.getDay()]}`;
+    load();
+    ensureCycle();
+    initCalendar();
+    renderAll();
+    console.log('[study-plan] init OK, cycle=', state.cycle && state.cycle.startDate);
+  }catch(e){
+    console.error('[study-plan] init failed:', e);
+  }
+}
+init();
+</script>
+</body>
+</html>
