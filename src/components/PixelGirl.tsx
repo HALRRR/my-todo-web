@@ -115,7 +115,7 @@ export default function PixelGirl({ emotion }: PixelGirlProps) {
           className="absolute top-22 -right-2 w-3 h-10 rounded-sm"
           style={{
             backgroundColor: '#fef3c7',
-            transform: emotion.girlExpression === 'joy' ? 'rotate(30deg)' : 'rotate(0deg)',
+            transform: emotion.girlExpression === 'happy' ? 'rotate(30deg)' : 'rotate(0deg)',
             transformOrigin: 'top center',
             transition: 'transform 0.3s ease',
           }}
